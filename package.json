@@ -1,0 +1,16 @@
+{
+  "scripts": {
+    "index": "node src/index.js",
+    "classifyMessage": "node src/services/gemini/classifyMessage.js",
+    "sendGreeting": "node src/services/whatsapp/sendGreeting.js",
+    "sendMessage": "node src/services/whatsapp/sendMessage.js",
+    "sendUnknownMessage": "node src/services/whatsapp/sendUnknownMessage.js"
+  },
+  "type": "module",
+  "dependencies": {
+    "@google/genai": "^1.24.0",
+    "axios": "^1.12.2",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0"
+  }
+}

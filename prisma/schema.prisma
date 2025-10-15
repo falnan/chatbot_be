@@ -1,0 +1,80 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  waId      String    @unique             // WhatsApp user phone ID (from webhook)
+  name      String?                       // optional profile name
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  messages  Message[]
+  conversations Conversation[]
+}
+
+model Conversation {
+  id        Int       @id @default(autoincrement())
+  user      User      @relation(fields: [userId], references: [id])
+  userId    Int
+  startedAt DateTime  @default(now())
+  closedAt  DateTime?
+  status    ConversationStatus @default(OPEN)
+
+  messages  Message[]
+}
+
+enum ConversationStatus {
+  OPEN
+  CLOSED
+}
+
+model Message {
+  id            Int       @id @default(autoincrement())
+  conversation  Conversation @relation(fields: [conversationId], references: [id])
+  conversationId Int
+  user          User      @relation(fields: [userId], references: [id])
+  userId        Int
+
+  direction     MessageDirection         // INBOUND from user / OUTBOUND to user
+  text          String
+  category      Category?                // predicted/stored category for INBOUND
+  sentAt        DateTime  @default(now())
+}
+
+enum MessageDirection {
+  INBOUND
+  OUTBOUND
+}
+
+enum Category {
+  penelitian
+  permintaan_data
+  perizinan_magang
+  permohonan_kerja_sama
+  info_lowongan_kerja
+  info_p3mi_riau
+  kendala_siskop2mi
+  lainnya
+}
+
+model Template {
+  id        Int      @id @default(autoincrement())
+  key       String   @unique                  // e.g. "opening_menu_id"
+  title     String
+  body      String                            // text body (plain) or JSON for interactive payload
+  category  Category?
+  type      TemplateType @default(TEXT)       // TEXT or INTERACTIVE
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum TemplateType {
+  TEXT
+  INTERACTIVE
+}
