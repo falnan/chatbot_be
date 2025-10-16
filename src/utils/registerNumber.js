@@ -1,16 +1,17 @@
 import axios from "axios";
 import "dotenv/config";
 
-const phone_number_id = process.env.WHATSAPP_PHONE_NUMBER_ID;
-const whatsapp_access_token = process.env.WHATSAPP_ACCESS_TOKEN;
+const PHONE_NUMBER_ID = process.env.WHATSAPP_PHONE_NUMBER_ID;
+const WHATSAPP_TOKEN = process.env.WHATSAPP_TOKEN;
 
-const PIN = "369605";
-const CERTIFICATE = `CmUKIQjfwvmhju62AhIGZW50OndhIghGYWxuYUJvdFC5mr3HBhpA5TWcocgsJBIKcbDCI7NxKMQTnvPbIy1bYpFb/btJ29wsKNhbiKz0vbYeZfKzTJrUxsfNszeQQ2FyjRmSCMKcAhIwbVZ0uP3mpp/wWrO0mqRsIJxb4uJdzPMvXnUb9Uo63F5TlIYZPedWEN5Pflb5yLFr`;
+const PIN = "981674";
+const CERTIFICATE =
+  "CmUKIQjljr7248bwAhIGZW50OndhIghGYWxuYURldlC/+8LHBhpAIp5HmKDCggFnJRzsbgOwSP+18L1LBKuWsbM1bPRbKNDbdKZOM1CKtRKy0SieqN0ETyUJ7jA09/9CMoIAEikpCRIwbRAStcP1jOvxWrO0mqRqLpdf5+VUzPQpXnN6iko63F6x3R2Xy6cIgFbU+tI01nyJ";
 
 async function registerNumber() {
   try {
     const response = await axios.post(
-      `https://graph.facebook.com/v21.0/${phone_number_id}/register`,
+      `https://graph.facebook.com/v21.0/${PHONE_NUMBER_ID}/register`,
       {
         messaging_product: "whatsapp",
         pin: PIN,
@@ -18,7 +19,7 @@ async function registerNumber() {
       },
       {
         headers: {
-          Authorization: `Bearer ${whatsapp_access_token}`,
+          Authorization: `Bearer ${WHATSAPP_TOKEN}`,
           "Content-Type": "application/json",
         },
       }

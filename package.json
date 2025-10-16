@@ -1,16 +1,20 @@
 {
   "scripts": {
-    "index": "node src/index.js",
-    "classifyMessage": "node src/services/gemini/classifyMessage.js",
-    "sendGreeting": "node src/services/whatsapp/sendGreeting.js",
-    "sendMessage": "node src/services/whatsapp/sendMessage.js",
-    "sendUnknownMessage": "node src/services/whatsapp/sendUnknownMessage.js"
+    "start": "node src/index.js",
+    "classifyMessage": "node src/services/classifyMessage.js",
+    "sendGreeting": "node src/services/sendGreeting.js",
+    "sendMessage": "node src/services/sendMessage.js",
+    "sendUnknownMessage": "node src/services/sendUnknownMessage.js",
+    "takeUserProfile": "node src/services/takeUserProfile.js",
+    "userActivity": "node src/services/userActivity.js"
   },
   "type": "module",
   "dependencies": {
     "@google/genai": "^1.24.0",
+    "@prisma/client": "^6.17.1",
     "axios": "^1.12.2",
     "dotenv": "^17.2.3",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "prisma": "^6.17.1"
   }
 }

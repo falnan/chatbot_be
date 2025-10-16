@@ -1,18 +1,24 @@
 import axios from "axios";
 import "dotenv/config";
+import { menuTemplate } from "../../templates/menuTemplate.js";
+import sendUnknownMessage from "./sendUnknownMessage.js";
 
 const PHONE_NUMBER_ID = process.env.WHATSAPP_PHONE_NUMBER_ID;
 const WHATSAPP_TOKEN = process.env.WHATSAPP_TOKEN;
 
-export async function sendMessage(to, message) {
+export default async function sendMessage(sender, classify) {
+  const menuItem = menuTemplate.find((item) => item.id == classify);
+  if (!menuItem) {
+    return await sendUnknownMessage(sender);
+  }
   try {
     const response = await axios.post(
       `https://graph.facebook.com/v21.0/${PHONE_NUMBER_ID}/messages`,
       {
         messaging_product: "whatsapp",
-        to,
+        to: sender,
         type: "text",
-        text: { body: message },
+        text: { body: menuItem.answer },
       },
       {
         headers: {
@@ -39,5 +45,3 @@ export async function sendMessage(to, message) {
     };
   }
 }
-
-// sendMessage("6282285567722", "hehe");

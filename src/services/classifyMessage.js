@@ -1,12 +1,14 @@
 import { GoogleGenAI } from "@google/genai";
-import { menuTemplate } from "../../../templates/menuTemplate.js";
+import { menuTemplate } from "../../templates/menuTemplate.js";
 import "dotenv/config";
 
 const ai = new GoogleGenAI({});
 const categories = menuTemplate.map((item) => item.id);
+categories.unshift("salam");
+categories.push("lainnya");
 const categoriesString = categories.join(",");
 
-export async function classifyMessage(message) {
+export default async function classifyMessage(message) {
   try {
     const response = await ai.models.generateContent({
       // model: "gemini-2.5-flash",
@@ -24,6 +26,7 @@ export async function classifyMessage(message) {
     });
 
     const rawText = response.text || "";
+    console.log(rawText);
     const cleaned = rawText
       .trim()
       .replace(/^["']|["']$/g, "")
@@ -32,12 +35,11 @@ export async function classifyMessage(message) {
       (cat) => cleaned === cat.toLocaleLowerCase()
     );
     const finalCategory = matchedCategory || "lainnya";
-    // console.log(finalCategory);
-    return {
-      success: true,
-      status: response.status,
-      data: finalCategory,
-    };
+    return finalCategory;
+    // return {
+    //   success: true,
+    //   data: finalCategory,
+    // };
   } catch (error) {
     console.error(" Error di classifyMessage:", error.message);
     return {
@@ -51,5 +53,3 @@ export async function classifyMessage(message) {
     };
   }
 }
-
-classifyMessage("saya mau magang di bp3mi riau");
